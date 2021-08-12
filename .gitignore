@@ -1,0 +1,12 @@
+# VS code
+/.vscode
+
+# Virtual enviroment
+/env
+
+# Python
+.ipynb_checkpoints/
+__pycache__/
+
+# CS231n
+cifar-10-batches-py/
