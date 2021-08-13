@@ -2,21 +2,20 @@ import numpy as np
 
 
 class KNearestNeighbor():
-    """ a kNN classifier with L2 distance """
+    """ kNN-классификатор с L2-расстоянием """
     def __init__(self):
         pass
 
 
     def train(self, X, y):
         """
-        Train the classifier. For k-nearest neighbors this is just
-        memorizing the training data.
+        Обучает классификатор. Для k-NN это просто запоминание обучающих данных.
 
-        Inputs:
-        - X: A numpy array of shape (num_train, D) containing the training data
-          consisting of num_train samples each of dimension D.
-        - y: A numpy array of shape (N,) containing the training labels, where
-             y[i] is the label for X[i].
+        Получает на входе:
+        - X: numpy массив формой (num_train, D), содержащий обучающие данные,
+          состоящие из num_train примеров каждого измерения D.
+        - y: numpy массив формой (N,), содержащий обучающие метки, где
+          y[i] - метка для X[i].
         """
         self.X_train = X
         self.y_train = y
@@ -24,18 +23,18 @@ class KNearestNeighbor():
 
     def predict(self, X, k=1, num_loops=0):
         """
-        Predict labels for test data using this classifier.
+        Предсказывает метки для тестовых данных с помощью этого классификатора.
 
-        Inputs:
-        - X: A numpy array of shape (num_test, D) containing test data consisting
-             of num_test samples each of dimension D.
-        - k: The number of nearest neighbors that vote for the predicted labels.
-        - num_loops: Determines which implementation to use to compute distances
-          between training points and testing points.
+        Получает на входе:
+        - X: numpy массив формой (num_test, D), содержащий тестовые данные,
+          состоящие из num_test примеров каждого измерения D.
+        - k: Количество ближайших соседей, голосующих за предсказанные метки.
+        - num_loops: Определяет, какую реализацию использовать для вычисления
+          расстояний между обучающими и тестовыми точками.
 
-        Returns:
-        - y: A numpy array of shape (num_test,) containing predicted labels for the
-          test data, where y[i] is the predicted label for the test point X[i].
+        Возвращает:
+        - y: numpy массив формой (num_test,), содержащий предсказанные метки для
+          тестовых данных, где y[i] - предсказанная метка для тестовой точки X[i].
         """
         if num_loops == 0:
             dists = self.compute_distances_no_loops(X)
@@ -44,142 +43,148 @@ class KNearestNeighbor():
         elif num_loops == 2:
             dists = self.compute_distances_two_loops(X)
         else:
-            raise ValueError('Invalid value %d for num_loops' % num_loops)
+            raise ValueError("Invalid value %d for num_loops" % num_loops)
 
         return self.predict_labels(dists, k=k)
 
 
     def compute_distances_two_loops(self, X):
         """
-        Compute the distance between each test point in X and each training point
-        in self.X_train using a nested loop over both the training data and the
-        test data.
+        Вычисляет расстояние между каждой тестовой точкой в X и каждой обучающей
+        точкой в self.X_train, используя вложенный цикл как по обучающим, так и по
+        тестовым данным.
 
-        Inputs:
-        - X: A numpy array of shape (num_test, D) containing test data.
+        Получает на входе:
+        - X: numpy массив формой (num_test, D), содержащий тестовые данные.
 
-        Returns:
-        - dists: A numpy array of shape (num_test, num_train) where dists[i, j]
-          is the Euclidean distance between the ith test point and the jth training
-          point.
+        Возвращает:
+        - dists: numpy массив формой (num_test, num_train), в котором dists[i, j] -
+          евклидово расстояние между i-ой тестовой и j-ой обучающей точкой.
         """
         num_test = X.shape[0]
         num_train = self.X_train.shape[0]
         dists = np.zeros((num_test, num_train))
         for i in range(num_test):
             for j in range(num_train):
-                #####################################################################
-                # TODO:                                                             #
-                # Compute the l2 distance between the ith test point and the jth    #
-                # training point, and store the result in dists[i, j]. You should   #
-                # not use a loop over dimension, nor use np.linalg.norm().          #
-                #####################################################################
-                # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+                ################################################################
+                # TODO:                                                        #
+                # Вычислите L2-расстояние между i-ой тестовой и j-ой обучающей #
+                # точкой, и сохраните результат в dists[i, j]. Вы не должны    #
+                # использовать цикл по размерности точки данных или функцию    #
+                # np.linalg.norm().                                            #
+                ################################################################
+                # ******************** НАЧАЛО МОЕГО КОДА ********************* #
+                # формула L2-расстояния
+                dist = pow(pow((X[i] - self.X_train[j]), 2).sum(), 0.5)
+                dists[i, j] = dist
+                # ******************** КОНЕЦ  МОЕГО КОДА ********************* #
 
-                pass
-
-                # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
 
     def compute_distances_one_loop(self, X):
         """
-        Compute the distance between each test point in X and each training point
-        in self.X_train using a single loop over the test data.
+        Вычисляет расстояние между каждой тестовой точкой в X и каждой обучающей
+        точкой в self.X_train, используя один цикл по тестовым данным.
 
-        Input / Output: Same as compute_distances_two_loops
+        Получает на входе:
+        - X: numpy массив формой (num_test, D), содержащий тестовые данные.
+
+        Возвращает:
+        - dists: numpy массив формой (num_test, num_train), в котором dists[i, j] -
+          евклидово расстояние между i-ой тестовой и j-ой обучающей точкой.
         """
         num_test = X.shape[0]
         num_train = self.X_train.shape[0]
         dists = np.zeros((num_test, num_train))
         for i in range(num_test):
-            #######################################################################
-            # TODO:                                                               #
-            # Compute the l2 distance between the ith test point and all training #
-            # points, and store the result in dists[i, :].                        #
-            # Do not use np.linalg.norm().                                        #
-            #######################################################################
-            # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            ##############################################################
+            # TODO:                                                      #
+            # Вычислите L2-расстояние между i-ой тестовой точкой и всеми #
+            # обучающими точками, и сохраните результат в dists[i, :].   #
+            # Нельзя использовать np.linalg.norm().                      #
+            ##############################################################
 
             pass
 
-            # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
 
     def compute_distances_no_loops(self, X):
         """
-        Compute the distance between each test point in X and each training point
-        in self.X_train using no explicit loops.
+        Вычислияет расстояние между каждой тестовой точкой в X и каждой обучающей
+        точкой в self.X_train без явных циклов.
 
-        Input / Output: Same as compute_distances_two_loops
+        Получает на входе:
+        - X: numpy массив формой (num_test, D), содержащий тестовые данные.
+
+        Возвращает:
+        - dists: numpy массив формой (num_test, num_train), в котором dists[i, j] -
+          евклидово расстояние между i-ой тестовой и j-ой обучающей точкой.
         """
         num_test = X.shape[0]
         num_train = self.X_train.shape[0]
         dists = np.zeros((num_test, num_train))
-        #########################################################################
-        # TODO:                                                                 #
-        # Compute the l2 distance between all test points and all training      #
-        # points without using any explicit loops, and store the result in      #
-        # dists.                                                                #
-        #                                                                       #
-        # You should implement this function using only basic array operations; #
-        # in particular you should not use functions from scipy,                #
-        # nor use np.linalg.norm().                                             #
-        #                                                                       #
-        # HINT: Try to formulate the l2 distance using matrix multiplication    #
-        #       and two broadcast sums.                                         #
-        #########################################################################
-        # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+        ##########################################################################
+        # TODO:                                                                  #
+        # Вычислите L2-расстояние между i-ой тестовой точкой и всеми             #
+        # обучающими точками, не используя любуе явные циклы, и сохраните        #
+        # результат в dists.                                                     #
+        #                                                                        #
+        # Вы должны реализовать эту функцию, используя только базовые операции с #
+        # массивами; в частности, вы не должны использовать функции из scipy или #
+        # np.linalg.norm ().                                                     #
+        #                                                                        #
+        # ПОДСКАЗКА: Попробуйте сформулировать L2-расстояние, используя          #
+        # умножение матриц и две широковещательные (broadcast) суммы.            #
+        ##########################################################################
 
         pass
 
-        # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
 
     def predict_labels(self, dists, k=1):
         """
-        Given a matrix of distances between test points and training points,
-        predict a label for each test point.
+        Учитывая матрицу расстояний между тестовыми и обучающими точками,
+        предскажите метку для каждой тестовой точки.
 
-        Inputs:
-        - dists: A numpy array of shape (num_test, num_train) where dists[i, j]
-          gives the distance betwen the ith test point and the jth training point.
+        Получает на входе:
+        - dists: numpy массив формой (num_test, num_train), где dists[i, j] -
+          даёт расстояние между i-й тестовой и j-й обучающей точкой.
 
-        Returns:
-        - y: A numpy array of shape (num_test,) containing predicted labels for the
-          test data, where y[i] is the predicted label for the test point X[i].
+        Возвращает:
+        - y: numpy массив формой (num_test,), содержащий предсказанные метки для
+          тестовых данных, где y[i] - предсказанная метка для тестовой точки X[i].
         """
         num_test = dists.shape[0]
         y_pred = np.zeros(num_test)
         for i in range(num_test):
-            # A list of length k storing the labels of the k nearest neighbors to
-            # the ith test point.
+            # Список длины k, в котором хранятся метки k ближайших соседей для
+            # i-й тестовой точки.
             closest_y = []
-            #########################################################################
-            # TODO:                                                                 #
-            # Use the distance matrix to find the k nearest neighbors of the ith    #
-            # testing point, and use self.y_train to find the labels of these       #
-            # neighbors. Store these labels in closest_y.                           #
-            # Hint: Look up the function numpy.argsort.                             #
-            #########################################################################
-            # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            #####################################################################
+            # TODO:                                                             #
+            # Используйте матрицу расстояний, чтобы найти k ближайших соседей   #  
+            # i-й тестовой точки, и используйте self.y_train, чтобы найти метки #
+            # этих соседей. Храните эти метки в closest_y.                      #
+            # ПОДСКАЗКА: Найдите функцию numpy.argsort.                         #
+            #####################################################################
+            # *********************** НАЧАЛО МОЕГО КОДА *********************** #
+            sorted_indices = dists[i].argsort()
+            k_closest_indices = sorted_indices[:k]
+            closest_y = self.y_train[k_closest_indices]
+            # *********************** КОНЕЦ  МОЕГО КОДА *********************** #
 
-            pass
-
-            # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            #########################################################################
-            # TODO:                                                                 #
-            # Now that you have found the labels of the k nearest neighbors, you    #
-            # need to find the most common label in the list closest_y of labels.   #
-            # Store this label in y_pred[i]. Break ties by choosing the smaller     #
-            # label.                                                                #
-            #########################################################################
-            # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-            pass
-
-            # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            #####################################################################
+            # TODO:                                                             #
+            # Теперь, когда вы нашли метки k ближайших соседей, вам нужно найти #
+            # наиболее распространённую метку в списке меток closest_y.         #
+            # Сохраните эту метку в y_pred [i]. При неопределённости выберете   #
+            # метку меньшего размера.                                           #
+            #####################################################################
+            # *********************** НАЧАЛО МОЕГО КОДА *********************** #
+            y_pred[i] = np.bincount(closest_y, minlength=10).argmax()
+            # *********************** КОНЕЦ  МОЕГО КОДА *********************** #
 
         return y_pred
