@@ -1,12 +1,10 @@
-from builtins import range
-from builtins import object
 import numpy as np
 
 from ..layers import *
 from ..rnn_layers import *
 
 
-class CaptioningRNN(object):
+class CaptioningRNN():
     """
     A CaptioningRNN produces captions from image features using a recurrent
     neural network.
@@ -80,6 +78,7 @@ class CaptioningRNN(object):
         # Cast parameters to correct dtype
         for k, v in self.params.items():
             self.params[k] = v.astype(self.dtype)
+
 
     def loss(self, features, captions):
         """
@@ -159,6 +158,7 @@ class CaptioningRNN(object):
         ############################################################################
 
         return loss, grads
+
 
     def sample(self, features, max_length=30):
         """

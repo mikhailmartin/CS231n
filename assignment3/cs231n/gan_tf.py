@@ -3,6 +3,7 @@ import tensorflow as tf
 
 NOISE_DIM = 96
 
+
 def leaky_relu(x, alpha=0.01):
     """Compute the leaky ReLU activation function.
     
@@ -19,7 +20,8 @@ def leaky_relu(x, alpha=0.01):
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-    
+
+
 def sample_noise(batch_size, dim, seed=None):
     """Generate random uniform noise from -1 to 1.
     
@@ -38,7 +40,8 @@ def sample_noise(batch_size, dim, seed=None):
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-    
+
+
 def discriminator(seed=None):
     """Compute discriminator score for a batch of input images.
     
@@ -68,6 +71,7 @@ def discriminator(seed=None):
     ##############################################################################
     return model
 
+
 def generator(noise_dim=NOISE_DIM, seed=None):
     """Generate images from a random noise vector.
     
@@ -96,6 +100,7 @@ def generator(noise_dim=NOISE_DIM, seed=None):
     ##############################################################################
     return model
 
+
 def discriminator_loss(logits_real, logits_fake):
     """
     Computes the discriminator loss described above.
@@ -114,6 +119,7 @@ def discriminator_loss(logits_real, logits_fake):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
+
 
 def generator_loss(logits_fake):
     """
@@ -155,6 +161,7 @@ def get_solvers(learning_rate=1e-3, beta1=0.5):
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return D_solver, G_solver
 
+
 def ls_discriminator_loss(scores_real, scores_fake):
     """
     Compute the Least-Squares GAN loss for the discriminator.
@@ -174,6 +181,7 @@ def ls_discriminator_loss(scores_real, scores_fake):
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
 
+
 def ls_generator_loss(scores_fake):
     """
     Computes the Least-Squares GAN loss for the generator.
@@ -191,6 +199,7 @@ def ls_generator_loss(scores_fake):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
+
 
 def dc_discriminator():
     """Compute discriminator score for a batch of input images.
@@ -294,6 +303,7 @@ def run_a_gan(D, G, D_solver, G_solver, discriminator_loss, generator_loss,\
     
     return images, G_sample[:16]
 
+
 class MNIST(object):
     def __init__(self, batch_size, shuffle=False):
         """
@@ -310,6 +320,7 @@ class MNIST(object):
         self.X, self.y = X, y
         self.batch_size, self.shuffle = batch_size, shuffle
 
+
     def __iter__(self):
         N, B = self.X.shape[0], self.batch_size
         idxs = np.arange(N)
@@ -317,14 +328,18 @@ class MNIST(object):
             np.random.shuffle(idxs)
         return iter((self.X[i:i+B], self.y[i:i+B]) for i in range(0, N, B)) 
 
+
 def preprocess_img(x):
     return 2 * x - 1.0
+
 
 def deprocess_img(x):
     return (x + 1.0) / 2.0
 
+
 def rel_error(x,y):
     return np.max(np.abs(x - y) / (np.maximum(1e-8, np.abs(x) + np.abs(y))))
+
 
 def count_params(model):
     """Count the number of parameters in the current TensorFlow graph """

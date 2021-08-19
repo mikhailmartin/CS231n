@@ -1,12 +1,10 @@
-from builtins import range
-from builtins import object
 import numpy as np
 
 from ..layers import *
 from ..layer_utils import *
 
 
-class TwoLayerNet(object):
+class TwoLayerNet():
     """
     A two-layer fully-connected neural network with ReLU nonlinearity and
     softmax loss that uses a modular layer design. We assume an input dimension
@@ -61,6 +59,7 @@ class TwoLayerNet(object):
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
+
 
     def loss(self, X, y=None):
         """
@@ -122,7 +121,7 @@ class TwoLayerNet(object):
         return loss, grads
 
 
-class FullyConnectedNet(object):
+class FullyConnectedNet():
     """
     A fully-connected neural network with an arbitrary number of hidden layers,
     ReLU nonlinearities, and a softmax loss function. This will also implement
@@ -222,6 +221,7 @@ class FullyConnectedNet(object):
         # Cast all parameters to the correct datatype
         for k, v in self.params.items():
             self.params[k] = v.astype(dtype)
+
 
     def loss(self, X, y=None):
         """

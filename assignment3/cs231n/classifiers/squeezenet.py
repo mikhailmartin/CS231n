@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+
 NUM_CLASSES = 1000
 
 class Fire(tf.keras.Model):
@@ -9,6 +10,7 @@ class Fire(tf.keras.Model):
         self.squeeze = tf.keras.layers.Conv2D(squeeze_planes, input_shape=(inplanes,), kernel_size=1, strides=(1,1), padding="VALID", activation='relu',name='squeeze')
         self.expand1x1 = tf.keras.layers.Conv2D(expand1x1_planes, kernel_size=1, padding="VALID", strides=(1,1), activation='relu',name='e11')
         self.expand3x3 = tf.keras.layers.Conv2D(expand3x3_planes, kernel_size=3, padding="SAME", strides=(1,1), activation='relu',name='e33')
+
 
     def call(self, x):
         x = self.squeeze(x)

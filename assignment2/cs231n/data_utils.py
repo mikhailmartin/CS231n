@@ -1,9 +1,7 @@
-from __future__ import print_function
+import os
 
-from builtins import range
 from six.moves import cPickle as pickle
 import numpy as np
-import os
 from imageio import imread
 import platform
 

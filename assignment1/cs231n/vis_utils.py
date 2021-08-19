@@ -1,8 +1,6 @@
-from builtins import range
-from past.builtins import xrange
-
 from math import sqrt, ceil
 import numpy as np
+
 
 def visualize_grid(Xs, ubound=255.0, padding=1):
     """
@@ -36,13 +34,15 @@ def visualize_grid(Xs, ubound=255.0, padding=1):
     # grid_max = np.max(grid)
     # grid_min = np.min(grid)
     # grid = ubound * (grid - grid_min) / (grid_max - grid_min)
+
     return grid
+
 
 def vis_grid(Xs):
     """ visualize a grid of images """
     (N, H, W, C) = Xs.shape
     A = int(ceil(sqrt(N)))
-    G = np.ones((A*H+A, A*W+A, C), Xs.dtype)
+    G = np.ones((A * H + A, A * W + A, C), Xs.dtype)
     G *= np.min(Xs)
     n = 0
     for y in range(A):
@@ -54,7 +54,9 @@ def vis_grid(Xs):
     maxg = G.max()
     ming = G.min()
     G = (G - ming)/(maxg-ming)
+
     return G
+
 
 def vis_nn(rows):
     """ visualize array of arrays of images """

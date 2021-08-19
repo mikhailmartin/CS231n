@@ -1,4 +1,3 @@
-from builtins import object
 import numpy as np
 
 from ..layers import *
@@ -6,7 +5,7 @@ from ..fast_layers import *
 from ..layer_utils import *
 
 
-class ThreeLayerConvNet(object):
+class ThreeLayerConvNet():
     """
     A three-layer convolutional network with the following architecture:
 
@@ -72,6 +71,7 @@ class ThreeLayerConvNet(object):
 
         for k, v in self.params.items():
             self.params[k] = v.astype(dtype)
+
 
     def loss(self, X, y=None):
         """

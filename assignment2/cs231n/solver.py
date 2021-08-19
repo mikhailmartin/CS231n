@@ -1,9 +1,6 @@
-from __future__ import print_function, division
 from future import standard_library
 
 standard_library.install_aliases()
-from builtins import range
-from builtins import object
 import os
 import pickle as pickle
 
@@ -12,7 +9,7 @@ import numpy as np
 from cs231n import optim
 
 
-class Solver(object):
+class Solver():
     """
     A Solver encapsulates all the logic necessary for training classification
     models. The Solver performs stochastic gradient descent using different
@@ -147,6 +144,7 @@ class Solver(object):
 
         self._reset()
 
+
     def _reset(self):
         """
         Set up some book-keeping variables for optimization. Don't call this
@@ -165,6 +163,7 @@ class Solver(object):
         for p in self.model.params:
             d = {k: v for k, v in self.optim_config.items()}
             self.optim_configs[p] = d
+
 
     def _step(self):
         """
@@ -189,6 +188,7 @@ class Solver(object):
             self.model.params[p] = next_w
             self.optim_configs[p] = next_config
 
+
     def _save_checkpoint(self):
         if self.checkpoint_name is None:
             return
@@ -210,6 +210,7 @@ class Solver(object):
             print('Saving checkpoint to "%s"' % filename)
         with open(filename, "wb") as f:
             pickle.dump(checkpoint, f)
+
 
     def check_accuracy(self, X, y, num_samples=None, batch_size=100):
         """
@@ -250,6 +251,7 @@ class Solver(object):
         acc = np.mean(y_pred == y)
 
         return acc
+
 
     def train(self):
         """

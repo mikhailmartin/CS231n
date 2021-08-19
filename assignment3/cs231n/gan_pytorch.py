@@ -14,6 +14,7 @@ NOISE_DIM = 96
 dtype = torch.FloatTensor
 #dtype = torch.cuda.FloatTensor ## UNCOMMENT THIS LINE IF YOU'RE ON A GPU!
 
+
 def sample_noise(batch_size, dim, seed=None):
     """
     Generate a PyTorch Tensor of uniform random noise.
@@ -34,7 +35,8 @@ def sample_noise(batch_size, dim, seed=None):
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-    
+
+
 def discriminator(seed=None):
     """
     Build and return a PyTorch model implementing the architecture above.
@@ -59,7 +61,8 @@ def discriminator(seed=None):
     #                               END OF YOUR CODE                             #
     ##############################################################################
     return model
-    
+
+
 def generator(noise_dim=NOISE_DIM, seed=None):
     """
     Build and return a PyTorch model implementing the architecture above.
@@ -85,6 +88,7 @@ def generator(noise_dim=NOISE_DIM, seed=None):
     ##############################################################################
     return model
 
+
 def bce_loss(input, target):
     """
     Numerically stable version of the binary cross-entropy loss function.
@@ -103,6 +107,7 @@ def bce_loss(input, target):
     neg_abs = - input.abs()
     loss = input.clamp(min=0) - input * target + (1 + neg_abs.exp()).log()
     return loss.mean()
+
 
 def discriminator_loss(logits_real, logits_fake):
     """
@@ -123,6 +128,7 @@ def discriminator_loss(logits_real, logits_fake):
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
 
+
 def generator_loss(logits_fake):
     """
     Computes the generator loss described above.
@@ -140,6 +146,7 @@ def generator_loss(logits_fake):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
+
 
 def get_optimizer(model):
     """
@@ -160,6 +167,7 @@ def get_optimizer(model):
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return optimizer
 
+
 def ls_discriminator_loss(scores_real, scores_fake):
     """
     Compute the Least-Squares GAN loss for the discriminator.
@@ -179,6 +187,7 @@ def ls_discriminator_loss(scores_real, scores_fake):
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
 
+
 def ls_generator_loss(scores_fake):
     """
     Computes the Least-Squares GAN loss for the generator.
@@ -196,6 +205,7 @@ def ls_generator_loss(scores_fake):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return loss
+
 
 def build_dc_classifier(batch_size):
     """
@@ -237,6 +247,7 @@ def build_dc_generator(noise_dim=NOISE_DIM):
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
+
 
 def run_a_gan(D, G, D_solver, G_solver, discriminator_loss, generator_loss, loader_train, show_every=250, 
               batch_size=128, noise_size=96, num_epochs=10):
@@ -291,7 +302,6 @@ def run_a_gan(D, G, D_solver, G_solver, discriminator_loss, generator_loss, load
     return images
 
 
-
 class ChunkSampler(sampler.Sampler):
     """Samples elements sequentially from some offset. 
     Arguments:
@@ -313,7 +323,8 @@ class Flatten(nn.Module):
     def forward(self, x):
         N, C, H, W = x.size() # read in N, C, H, W
         return x.view(N, -1)  # "flatten" the C * H * W values into a single vector per image
-    
+
+
 class Unflatten(nn.Module):
     """
     An Unflatten module receives an input of shape (N, C*H*W) and reshapes it
@@ -325,21 +336,28 @@ class Unflatten(nn.Module):
         self.C = C
         self.H = H
         self.W = W
+
+
     def forward(self, x):
         return x.view(self.N, self.C, self.H, self.W)
+
 
 def initialize_weights(m):
     if isinstance(m, nn.Linear) or isinstance(m, nn.ConvTranspose2d):
         nn.init.xavier_uniform_(m.weight.data)
 
+
 def preprocess_img(x):
     return 2 * x - 1.0
+
 
 def deprocess_img(x):
     return (x + 1.0) / 2.0
 
+
 def rel_error(x,y):
     return np.max(np.abs(x - y) / (np.maximum(1e-8, np.abs(x) + np.abs(y))))
+
 
 def count_params(model):
     """Count the number of parameters in the current TensorFlow graph """

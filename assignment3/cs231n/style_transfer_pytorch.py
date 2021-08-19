@@ -30,6 +30,7 @@ def content_loss(content_weight, content_current, content_original):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
+
 def gram_matrix(features, normalize=True):
     """
     Compute the Gram matrix from features.
@@ -49,6 +50,7 @@ def gram_matrix(features, normalize=True):
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+
 
 # Now put it together in the style_loss function...
 def style_loss(feats, style_layers, style_targets, style_weights):
@@ -77,6 +79,7 @@ def style_loss(feats, style_layers, style_targets, style_weights):
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
+
 def tv_loss(img, tv_weight):
     """
     Compute total variation loss.
@@ -95,6 +98,8 @@ def tv_loss(img, tv_weight):
     pass
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+
+
 def preprocess(img, size=512):
     """ Preprocesses a PIL JPG Image object to become a Pytorch tensor
         that is ready to be used as an input into the CNN model.
@@ -114,6 +119,7 @@ def preprocess(img, size=512):
         T.Lambda(lambda x: x[None]),
     ])
     return transform(img)
+
 
 def deprocess(img):
     """ De-processes a Pytorch tensor from the output of the CNN model to become
@@ -140,6 +146,7 @@ def deprocess(img):
     ])
     return transform(img)
 
+
 def rescale(x):
     """ A function used internally inside `deprocess`.
         Rescale elements of x linearly to be in the interval [0, 1]
@@ -150,8 +157,10 @@ def rescale(x):
     x_rescaled = (x - low) / (high - low)
     return x_rescaled
 
+
 def rel_error(x,y):
     return np.max(np.abs(x - y) / (np.maximum(1e-8, np.abs(x) + np.abs(y))))
+
 
 # We provide this helper code which takes an image, a model (cnn), and returns a list of
 # feature maps, one per layer.
@@ -177,6 +186,7 @@ def extract_features(x, cnn):
         features.append(next_feat)
         prev_feat = next_feat
     return features
+
 
 #please disregard warnings about initialization
 def features_from_img(imgpath, imgsize, cnn):

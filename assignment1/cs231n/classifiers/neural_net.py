@@ -1,12 +1,8 @@
-from __future__ import print_function
-
-from builtins import range
-from builtins import object
 import numpy as np
 import matplotlib.pyplot as plt
-from past.builtins import xrange
 
-class TwoLayerNet(object):
+
+class TwoLayerNet():
     """
     A two-layer fully-connected neural network. The net has an input dimension of
     N, a hidden layer dimension of H, and performs classification over C classes.
@@ -42,6 +38,7 @@ class TwoLayerNet(object):
         self.params['b1'] = np.zeros(hidden_size)
         self.params['W2'] = std * np.random.randn(hidden_size, output_size)
         self.params['b2'] = np.zeros(output_size)
+
 
     def loss(self, X, y=None, reg=0.0):
         """
@@ -116,6 +113,7 @@ class TwoLayerNet(object):
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         return loss, grads
+
 
     def train(self, X, y, X_val, y_val,
               learning_rate=1e-3, learning_rate_decay=0.95,
@@ -195,6 +193,7 @@ class TwoLayerNet(object):
           'train_acc_history': train_acc_history,
           'val_acc_history': val_acc_history,
         }
+
 
     def predict(self, X):
         """
