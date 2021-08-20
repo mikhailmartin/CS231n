@@ -2,61 +2,62 @@ from random import shuffle
 import numpy as np
 
 
+DELTA = 1
+
+
 def svm_loss_naive(W, X, y, reg):
     """
-    Structured SVM loss function, naive implementation (with loops).
+    Структурированная функция потерь SVM, наивная реализация (с циклами).
 
-    Inputs have dimension D, there are C classes, and we operate on minibatches
-    of N examples.
+    Входы имеют размерность D, есть C классов, и мы работает с минипакетами
+    из N примеров.
 
-    Inputs:
-    - W: A numpy array of shape (D, C) containing weights.
-    - X: A numpy array of shape (N, D) containing a minibatch of data.
-    - y: A numpy array of shape (N,) containing training labels; y[i] = c means
-      that X[i] has label c, where 0 <= c < C.
-    - reg: (float) regularization strength
+    Получает на входе:
+    - W: numpy массив формой (D, C), содержащий веса.
+    - X: numpy массив формой (N, D), содержащий минипакет данных.
+    - y: numpy массив формой (N,), содержащий обучающие метки; y[i] = c означает,
+      что X[i] имеет метку c, где 0 <= c < C.
+    - reg: (float) сила регуляризации.
 
-    Returns a tuple of:
-    - loss as single float
-    - gradient with respect to weights W; an array of same shape as W
+    Возвращает кортеж из:
+    - loss: (float) потери.
+    - dW: градиента по весам W; массив такой же формы как W.
     """
-    dW = np.zeros(W.shape)  # initialize the gradient as zero
+    # Инициализируем потерю и градиент нулями.
+    loss = 0.0
+    dW = np.zeros_like(W)
 
-    # compute the loss and the gradient
+    # вычислим потерю и градиент
     num_classes = W.shape[1]
     num_train = X.shape[0]
-    loss = 0.0
     for i in range(num_train):
         scores = X[i].dot(W)
         correct_class_score = scores[y[i]]
         for j in range(num_classes):
             if j == y[i]:
                 continue
-            margin = scores[j] - correct_class_score + 1  # note delta = 1
+            margin = scores[j] - correct_class_score + DELTA  # DELTA = 1
             if margin > 0:
                 loss += margin
 
-    # Right now the loss is a sum over all training examples, but we want it
-    # to be an average instead so we divide by num_train.
+    # Прямо сейчас loss - это сумма по всем обучающим примерам, но мы хотим,
+    # чтобы она была средней, поэтому мы делим на num_train.
     loss /= num_train
 
-    # Add regularization to the loss.
+    # Добавим регуляризацию к потере.
     loss += reg * np.sum(W * W)
 
-    #############################################################################
-    # TODO:                                                                     #
-    # Compute the gradient of the loss function and store it dW.                #
-    # Rather than first computing the loss and then computing the derivative,   #
-    # it may be simpler to compute the derivative at the same time that the     #
-    # loss is being computed. As a result you may need to modify some of the    #
-    # code above to compute the gradient.                                       #
-    #############################################################################
-    # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    # ***************************** ЗАДАНИЕ ***************************** #
+    # Вычислите градиент функции потерь и сохраните его в dW. Вместо      #
+    # того, чтобы сначала вычислять потерю, а потом производную, может    #
+    # быть проще вычислять производную одновременно с потерей.            #
+    # В результате вам, возможно, потребуется изменить приведённый выше   #
+    # код, чтобы вычислить градиент.                                      #
 
+    # ************************ НАЧАЛО МОЕГО КОДА ************************ #
     pass
+    # ************************ КОНЕЦ МОЕГО КОДА ************************* #
 
-    # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-    
     return loss, dW
 
 

@@ -4,37 +4,34 @@ from random import shuffle
 
 def softmax_loss_naive(W, X, y, reg):
     """
-    Softmax loss function, naive implementation (with loops)
+    Функция потерь Softmax, наивная реализация (с циклами).
 
-    Inputs have dimension D, there are C classes, and we operate on minibatches
-    of N examples.
+    Входы имеют размерность D, есть C классов, и мы работает с минипакетами
+    из N примеров.
 
-    Inputs:
-    - W: A numpy array of shape (D, C) containing weights.
-    - X: A numpy array of shape (N, D) containing a minibatch of data.
-    - y: A numpy array of shape (N,) containing training labels; y[i] = c means
-      that X[i] has label c, where 0 <= c < C.
-    - reg: (float) regularization strength
+    Получает на входе:
+    - W: numpy массив формой (D, C), содержащий веса.
+    - X: numpy массив формой (N, D), содержащий минипакет данных.
+    - y: numpy массив формой (N,), содержащий обучающие метки; y[i] = c означает,
+      что X[i] имеет метку c, где 0 <= c < C.
+    - reg: (float) сила регуляризации.
 
-    Returns a tuple of:
-    - loss as single float
-    - gradient with respect to weights W; an array of same shape as W
+    Возвращает кортеж из:
+    - loss: (float) потери.
+    - dW: градиента по весам W; массив такой же формы как W.
     """
-    # Initialize the loss and gradient to zero.
+    # Инициализируем потерю и градиент нулями.
     loss = 0.0
     dW = np.zeros_like(W)
+    # **************************** ЗАДАНИЕ **************************** #
+    # Вычислите softmax потерю и её градиент, используя явные циклы.    #
+    # Сохраните потери в loss, а градиент в dW. Если вы будете здесь    #
+    # неосторожны, вы можете легко столкнуться с проблемой числовой     #
+    # стабильности. Не забудьте про регуляризацию!                      #
 
-    #############################################################################
-    # TODO: Compute the softmax loss and its gradient using explicit loops.     #
-    # Store the loss in loss and the gradient in dW. If you are not careful     #
-    # here, it is easy to run into numeric instability. Don't forget the        #
-    # regularization!                                                           #
-    #############################################################################
-    # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+    # *********************** НАЧАЛО МОЕГО КОДА *********************** #
     pass
-
-    # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    # *********************** КОНЕЦ МОЕГО КОДА ************************ #
 
     return loss, dW
 
