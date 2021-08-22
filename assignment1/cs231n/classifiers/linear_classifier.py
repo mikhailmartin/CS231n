@@ -11,65 +11,68 @@ class LinearClassifier():
     def train(self, X, y, learning_rate=1e-3, reg=1e-5, num_iters=100,
               batch_size=200, verbose=False):
         """
-        Train this linear classifier using stochastic gradient descent.
+        Обучите этот линейный классификатор, используя стохастический
+        градиентный спуск.
 
-        Inputs:
-        - X: A numpy array of shape (N, D) containing training data; there are N
-          training samples each of dimension D.
-        - y: A numpy array of shape (N,) containing training labels; y[i] = c
-          means that X[i] has label 0 <= c < C for C classes.
-        - learning_rate: (float) learning rate for optimization.
-        - reg: (float) regularization strength.
-        - num_iters: (integer) number of steps to take when optimizing
-        - batch_size: (integer) number of training examples to use at each step.
-        - verbose: (boolean) If true, print progress during optimization.
+        Получает на входе:
+        - X: numpy массив формой (N, D), содержащий обучающие данные;
+          N - количество обучающих точек, размерность которых D.
+        - y: numpy массив формой (N,) содержащий обучающие метки; y[i] = c
+          означает, что X[i] имеет метку 0 <= c < C для C классов.
+        - learning_rate: (float) скорость обучения оптимизации.
+        - reg: (float) сила регуляризации.
+        - num_iters: (integer) количество шагов, которые необходимо предпринять
+          при оптимизации.
+        - batch_size: (integer) количество обучающих точек для использования на
+          каждом шаге.
+        - verbose: (boolean) Если True, печатает прогресс во время оптимизации.
 
-        Outputs:
-        A list containing the value of the loss function at each training iteration.
+        Возвращает:
+        - loss_history: Список, содержащий значение функции потерь на каждой
+          итерации обучения.
         """
         num_train, dim = X.shape
-        num_classes = np.max(y) + 1 # assume y takes values 0...K-1 where K is number of classes
+        # предположим, что y принимает значения 0...K-1,
+        # где K - количество классов
+        num_classes = np.max(y) + 1
         if self.W is None:
-            # lazily initialize W
-            self.W = 0.001 * np.random.randn(dim, num_classes)
+            # лениво инициализируем W
+            self.W = np.random.randn(dim, num_classes) * 0.001
 
-        # Run stochastic gradient descent to optimize W
+        # Запустите стохастический градиентный спуск для оптимизации W
         loss_history = []
         for it in range(num_iters):
             X_batch = None
             y_batch = None
 
-            #########################################################################
-            # TODO:                                                                 #
-            # Sample batch_size elements from the training data and their           #
-            # corresponding labels to use in this round of gradient descent.        #
-            # Store the data in X_batch and their corresponding labels in           #
-            # y_batch; after sampling X_batch should have shape (batch_size, dim)   #
-            # and y_batch should have shape (batch_size,)                           #
-            #                                                                       #
-            # Hint: Use np.random.choice to generate indices. Sampling with         #
-            # replacement is faster than sampling without replacement.              #
-            #########################################################################
-            # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            # ***************************** ЗАДАНИЕ ***************************** #
+            # Выберите batch_size элементов из обучающих данных и соответствующих #
+            # им меток, чтобы использовать их в этом раунде градиентного спуска.  #
+            # Сохраните данные в X_batch, а соответствующие им метки в y_batch;   #
+            # После выборки X_batch должен иметь форму (batch_size, D),           #
+            # а y_batch форму (batch_size,).                                      #
+            #                                                                     #
+            # ПОДСКАЗКА: Используйте np.random.choice(), чтобы генерировать       #
+            # индексы. Выборка с перестановкой быстрее, чем без неё.              #
 
-            pass
+            # ************************ НАЧАЛО МОЕГО КОДА ************************ #
+            rng = np.random.default_rng()
+            batch_indices = rng.choice(num_train, size=batch_size, replace=False)
+            X_batch = X[batch_indices]
+            y_batch = y[batch_indices]
+            # ************************ КОНЕЦ МОЕГО КОДА ************************* #
 
-            # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-            # evaluate loss and gradient
+            # оценим потерю и градиент
             loss, grad = self.loss(X_batch, y_batch, reg)
             loss_history.append(loss)
 
             # perform parameter update
-            #########################################################################
-            # TODO:                                                                 #
-            # Update the weights using the gradient and the learning rate.          #
-            #########################################################################
-            # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            # ***************************** ЗАДАНИЕ ***************************** #
+            # Обновите веса, используя градиент и скорость обучения.              #
 
+            # ************************ НАЧАЛО МОЕГО КОДА ************************ #
             pass
-
-            # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+            # ************************ КОНЕЦ МОЕГО КОДА ************************* #
 
             if verbose and it % 100 == 0:
                 print("iteration %d / %d: loss %f" % (it, num_iters, loss))
@@ -82,42 +85,42 @@ class LinearClassifier():
         Use the trained weights of this linear classifier to predict labels for
         data points.
 
-        Inputs:
-        - X: A numpy array of shape (N, D) containing training data; there are N
-          training samples each of dimension D.
+        Получает на входе:
+        - X: numpy массив формой (N, D), содержащий обучающие данные;
+          N - количество обучающих точек, размерность которых D.
 
-        Returns:
+        Возвращает:
         - y_pred: Predicted labels for the data in X. y_pred is a 1-dimensional
           array of length N, and each element is an integer giving the predicted
           class.
         """
         y_pred = np.zeros(X.shape[0])
-        ###########################################################################
-        # TODO:                                                                   #
-        # Implement this method. Store the predicted labels in y_pred.            #
-        ###########################################################################
-        # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
+        # ***************************** ЗАДАНИЕ ***************************** #
+        # Реализуйте этот метод. Сохраните предсказанные метки в y_pred.      #
+
+        # ************************ НАЧАЛО МОЕГО КОДА ************************ #
         pass
+        # ************************ КОНЕЦ МОЕГО КОДА ************************* #
 
-        # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return y_pred
 
 
     def loss(self, X_batch, y_batch, reg):
         """
-        Compute the loss function and its derivative.
-        Subclasses will override this.
+        Вычисляет функцию потерь и её производную.
+        Подклассы переопределят этот метод.
 
-        Inputs:
-        - X_batch: A numpy array of shape (N, D) containing a minibatch of N
-          data points; each point has dimension D.
-        - y_batch: A numpy array of shape (N,) containing labels for the minibatch.
-        - reg: (float) regularization strength.
+        Получает на входе:
+        - X_batch: numpy массив формой (batch_size, D), содержащий минипакет
+          из batch_size точек данных, размерность которых D.
+        - y_batch: numpy массив формой (batch_size,), содержащий метки для
+          минипакета.
+        - reg: (float) сила регуляризации.
 
-        Returns: A tuple containing:
-        - loss as a single float
-        - gradient with respect to self.W; an array of the same shape as W
+        Возвращает кортеж из:
+        - loss: (float) потери.
+        - grad: градиента по весам W; массив такой же формы как W.
         """
         pass
 
