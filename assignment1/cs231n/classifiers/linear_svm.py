@@ -25,10 +25,10 @@ def svm_loss_naive(W, X, y, reg, delta=1):
     grad = np.zeros_like(W)
 
     # вычислим потерю и градиент
-    num_classes = W.shape[1]
     num_train = X.shape[0]
+    num_classes = W.shape[1]
     for i in range(num_train):
-        scores = X[i].dot(W)
+        scores = np.dot(X[i], W)
         correct_class_score = scores[y[i]]
         for j in range(num_classes):
             if j == y[i]:
@@ -41,10 +41,10 @@ def svm_loss_naive(W, X, y, reg, delta=1):
                 # количество неправильных классов, для которых перевес > 0.
                 # Только здесь подсчёт осуществляется не через умножение, а
                 # через сложение.
-                grad[:, y[i]] += -X[i]
+                grad[:, y[i]] += -X[i]  # МОЙ КОД
                 # градиент для неправильного класса = X[i], если перевес > 0
-                #                                   = 0 иначе
-                grad[:, j] += X[i]
+                #                                   = 0, иначе
+                grad[:, j] += X[i]  # МОЙ КОД
 
     # Прямо сейчас loss - это сумма по всем обучающим примерам, но мы хотим,
     # чтобы она была средней, поэтому мы делим на num_train.
@@ -96,7 +96,7 @@ def svm_loss_vectorized(W, X, y, reg, delta=1):
     num_train = X.shape[0]
 
     # получаем оценки перемножением матриц XxW
-    scores = X.dot(W)
+    scores = np.dot(X, W)
     # вектор-столбец из оценок правильных классов
     correct_class_scores = scores[np.arange(num_train), y].reshape(num_train, 1)
     # матрица перевесов
@@ -122,8 +122,9 @@ def svm_loss_vectorized(W, X, y, reg, delta=1):
     margins_count[margins > 0] = 1
     a = margins_count.sum(axis=1)
     margins_count[np.arange(num_train), y] = -a
+    grad = np.dot((X.T), margins_count)
     # подсчёт среднего градиента по обучающим точкам
-    grad = (X.T).dot(margins_count) / num_train
+    grad /= num_train
     # добавляем регуляризацию градиента
     grad += reg * W
     # ************************ КОНЕЦ МОЕГО КОДА ************************* #

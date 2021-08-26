@@ -1,5 +1,5 @@
-import numpy as np
 from random import shuffle
+import numpy as np
 
 
 def softmax_loss_naive(W, X, y, reg):
@@ -12,8 +12,8 @@ def softmax_loss_naive(W, X, y, reg):
     Получает на входе:
     - W: numpy массив формой (D, C), содержащий веса.
     - X: numpy массив формой (N, D), содержащий минипакет данных.
-    - y: numpy массив формой (N,), содержащий обучающие метки; y[i] = c означает,
-      что X[i] имеет метку c, где 0 <= c < C.
+    - y: numpy массив формой (N,), содержащий обучающие метки; y[i] = c
+      означает, что X[i] имеет метку c, где 0 <= c < C.
     - reg: (float) сила регуляризации.
 
     Возвращает кортеж из:
@@ -23,6 +23,7 @@ def softmax_loss_naive(W, X, y, reg):
     # Инициализируем потерю и градиент нулями.
     loss = 0.0
     grad = np.zeros_like(W)
+
     # **************************** ЗАДАНИЕ **************************** #
     # Вычислите softmax потерю и её градиент, используя явные циклы.    #
     # Сохраните потери в loss, а градиент в dW. Если вы будете здесь    #
@@ -30,7 +31,30 @@ def softmax_loss_naive(W, X, y, reg):
     # стабильности. Не забудьте про регуляризацию!                      #
 
     # *********************** НАЧАЛО МОЕГО КОДА *********************** #
-    pass
+    num_train = X.shape[0]
+    num_classes = W.shape[1]
+    for i in range(num_train):
+        scores = np.dot(X[i], W)  # scores.shape = (C,)
+        scores -= np.max(scores)  # сдвиг, чтобы максималное число = 0
+        scores = np.exp(scores) / np.sum(np.exp(scores))
+
+        loss += -np.log(scores[y[i]])
+
+        for j in range(num_classes):
+            if j == y[i]:
+                grad[:, y[i]] += -(1 - scores[y[i]]) * X[i]
+            else:
+                grad[:, j] += scores[j] * X[i]
+    
+    # подсчёт средней потери по обучающим точкам
+    loss /= num_train
+    # подсчёт среднего градиента по обучающим точкам
+    grad /= num_train
+
+    # добавление штрафа регуляризации
+    loss += reg * np.sum(W * W)
+    # добавляем регуляризацию градиента
+    grad += reg * W
     # *********************** КОНЕЦ МОЕГО КОДА ************************ #
 
     return loss, grad
@@ -38,24 +62,48 @@ def softmax_loss_naive(W, X, y, reg):
 
 def softmax_loss_vectorized(W, X, y, reg):
     """
-    Softmax loss function, vectorized version.
+    Функция потерь Softmax, векторизированная реализация.
 
-    Inputs and outputs are the same as softmax_loss_naive.
+    Получает на входе:
+    - W: numpy массив формой (D, C), содержащий веса.
+    - X: numpy массив формой (N, D), содержащий минипакет данных.
+    - y: numpy массив формой (N,), содержащий обучающие метки; y[i] = c
+      означает, что X[i] имеет метку c, где 0 <= c < C.
+    - reg: (float) сила регуляризации.
+
+    Возвращает кортеж из:
+    - loss: (float) потери.
+    - grad: градиента по весам W; массив такой же формы как W.
     """
-    # Initialize the loss and gradient to zero.
+    # Инициализируем потерю и градиент нулями
     loss = 0.0
-    dW = np.zeros_like(W)
+    grad = np.zeros_like(W)
 
-    #############################################################################
-    # TODO: Compute the softmax loss and its gradient using no explicit loops.  #
-    # Store the loss in loss and the gradient in dW. If you are not careful     #
-    # here, it is easy to run into numeric instability. Don't forget the        #
-    # regularization!                                                           #
-    #############################################################################
-    # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    # **************************** ЗАДАНИЕ **************************** #
+    # Вычислите потерю softmax и её градиент без явных циклов.          #
+    # Сохраните потери в loss, а градиент в grad. Если вы будете здесь  #
+    # неосторожны, вы легко можете столкнуться с проблемой числовой     #
+    # стабильности. Не забудьте про регуляризацию!                      #
 
-    pass
+    # *********************** НАЧАЛО МОЕГО КОДА *********************** #
+    num_classes = W.shape[1]
+    num_train = X.shape[0]
+    scores = np.dot(X, W)
+    scores -= np.max(scores, axis=1).reshape(-1, 1)
+    scores = np.exp(scores) / np.sum(np.exp(scores), axis=1).reshape(-1, 1)
 
-    # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    loss = -np.sum(np.log(scores[range(num_train), list(y)]))
+    # подсчёт средней потери по обучающим точкам
+    loss /= num_train
+    # добавление штрафа регуляризации
+    loss += reg * np.sum(W * W)
 
-    return loss, dW
+    scores[range(num_train), list(y)] += -1
+    grad = np.dot((X.T), scores)
+    # подсчёт среднего градиента по обучающим точкам
+    grad /= num_train
+    # добавляем регуляризацию градиента
+    grad += reg * W
+    # *********************** КОНЕЦ МОЕГО КОДА ************************ #
+
+    return loss, grad
