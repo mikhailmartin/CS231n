@@ -3,10 +3,6 @@ import numpy as np
 
 class KNearestNeighbor():
     """ kNN-классификатор с L2-расстоянием """
-    def __init__(self):
-        pass
-
-
     def train(self, X, y):
         """
         Обучает классификатор. Для k-NN это просто запоминание обучающих данных.

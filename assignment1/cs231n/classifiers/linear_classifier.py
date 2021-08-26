@@ -1,5 +1,5 @@
 import numpy as np
-from cs231n.classifiers.linear_svm import svm_loss_vectorized
+from cs231n.classifiers.svm import svm_loss_vectorized
 from cs231n.classifiers.softmax import softmax_loss_vectorized
 
 
@@ -126,7 +126,7 @@ class LinearClassifier():
         pass
 
 
-class LinearSVM(LinearClassifier):
+class SVM(LinearClassifier):
     """ Подкласс, использующий функцию потерь мультиклассовой SVM """
     def loss(self, X_batch, y_batch, reg):
         return svm_loss_vectorized(self.W, X_batch, y_batch, reg)
