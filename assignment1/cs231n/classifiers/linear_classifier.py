@@ -1,9 +1,11 @@
+import abc
+
 import numpy as np
 from cs231n.classifiers.svm import svm_loss_vectorized
 from cs231n.classifiers.softmax import softmax_loss_vectorized
 
 
-class LinearClassifier():
+class LinearClassifier(metaclass=abc.ABCMeta):
     def __init__(self):
         self.W = None
 
@@ -11,7 +13,7 @@ class LinearClassifier():
     def train(self, X, y, learning_rate=1e-3, reg=1e-5, num_iters=100,
               batch_size=200, verbose=False):
         """
-        Обучите этот линейный классификатор, используя стохастический
+        Обучит этот линейный классификатор, используя стохастический
         градиентный спуск.
 
         Получает на входе:
@@ -107,6 +109,7 @@ class LinearClassifier():
         return y_pred
 
 
+    @abc.abstractmethod
     def loss(self, X_batch, y_batch, reg):
         """
         Вычисляет функцию потерь и её производную.
@@ -123,7 +126,7 @@ class LinearClassifier():
         - loss: (float) потери.
         - grad: градиента по весам W; массив такой же формы как W.
         """
-        pass
+        raise NotImplementedError()
 
 
 class SVM(LinearClassifier):
