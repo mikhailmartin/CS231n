@@ -12,7 +12,7 @@ def eval_numerical_gradient(f, x, verbose=True, h=0.00001):
 
     grad = np.zeros_like(x)
     # iterate over all indexes in x
-    it = np.nditer(x, flags=["multi_index"], op_flags=["readwrite"])
+    it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
     while not it.finished:
 
         # evaluate function at (x + h)
@@ -39,7 +39,7 @@ def eval_numerical_gradient_array(f, x, df, h=1e-5):
     array and returns a numpy array.
     """
     grad = np.zeros_like(x)
-    it = np.nditer(x, flags=["multi_index"], op_flags=["readwrite"])
+    it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
     while not it.finished:
         ix = it.multi_index
 
@@ -76,8 +76,8 @@ def eval_numerical_gradient_blobs(f, inputs, output, h=1e-5):
     numeric_diffs = []
     for input_blob in inputs:
         diff = np.zeros_like(input_blob.diffs)
-        it = np.nditer(input_blob.vals, flags=["multi_index"],
-                       op_flags=["readwrite"])
+        it = np.nditer(input_blob.vals, flags=['multi_index'],
+                       op_flags=['readwrite'])
         while not it.finished:
             idx = it.multi_index
             orig = input_blob.vals[idx]
@@ -108,7 +108,7 @@ def grad_check_sparse(f, x, analytic_grad, num_checks=10, h=1e-5):
     in this dimensions.
     """
 
-    print("Проверка началась.")
+    print('Проверка началась.')
     for i in range(num_checks):
         ix = tuple([randrange(m) for m in x.shape])
 
@@ -122,7 +122,7 @@ def grad_check_sparse(f, x, analytic_grad, num_checks=10, h=1e-5):
         grad_numerical = (fxph - fxmh) / (2 * h)
         grad_analytic = analytic_grad[ix]
         rel_error = (abs(grad_numerical - grad_analytic) /
-                    (abs(grad_numerical) + abs(grad_analytic)))
-        print("Численный: %f, аналитический: %f, относительная ошибка: %e"
-              % (grad_numerical, grad_analytic, rel_error))
-    print("Проверка закончилась.")
+                     (abs(grad_numerical) + abs(grad_analytic)))
+        print(f'Численный: {grad_numerical}, аналитический: {grad_analytic},'
+              f'относительная ошибка: {rel_error}')
+    print('Проверка закончилась.')

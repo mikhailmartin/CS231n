@@ -48,7 +48,7 @@ def vis_grid(Xs):
     for y in range(A):
         for x in range(A):
             if n < N:
-                G[y*H+y:(y+1)*H+y, x*W+x:(x+1)*W+x, :] = Xs[n,:,:,:]
+                G[y * H + y:(y + 1) * H + y, x*W+x:(x+1)*W+x, :] = Xs[n, :, :, :]
                 n += 1
     # normalize to [0,1]
     maxg = G.max()
@@ -62,14 +62,14 @@ def vis_nn(rows):
     """ visualize array of arrays of images """
     N = len(rows)
     D = len(rows[0])
-    H,W,C = rows[0][0].shape
+    H, W, C = rows[0][0].shape
     Xs = rows[0][0]
-    G = np.ones((N*H+N, D*W+D, C), Xs.dtype)
+    G = np.ones((N * H + N, D * W + D, C), Xs.dtype)
     for y in range(N):
         for x in range(D):
-            G[y*H+y:(y+1)*H+y, x*W+x:(x+1)*W+x, :] = rows[y][x]
+            G[y * H + y:(y + 1) * H + y, x * W + x:(x + 1) * W + x, :] = rows[y][x]
     # normalize to [0,1]
     maxg = G.max()
     ming = G.min()
-    G = (G - ming)/(maxg-ming)
+    G = (G - ming) / (maxg - ming)
     return G

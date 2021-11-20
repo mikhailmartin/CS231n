@@ -48,7 +48,7 @@ def extract_features(imgs, feature_fns, verbose=False):
             imgs_features[i, idx:next_idx] = feature_fn(imgs[i].squeeze())
             idx = next_idx
         if verbose and i % 1000 == 999:
-            print('Done extracting features for %d / %d images' % (i+1, num_images))
+            print('Done extracting features for %d / %d images' % (i + 1, num_images))
 
     return imgs_features
 
@@ -63,7 +63,7 @@ def rgb2gray(rgb):
         gray : grayscale image
 
     """
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.144])
+    return np.dot(rgb[..., :3], [0.299, 0.587, 0.144])
 
 
 def hog_feature(im):
@@ -115,7 +115,7 @@ def hog_feature(im):
         # select magnitudes for those orientations
         cond2 = temp_ori > 0
         temp_mag = np.where(cond2, grad_mag, 0)
-        orientation_histogram[:,:,i] = uniform_filter(temp_mag, size=(cx, cy))[round(cx/2)::cx, round(cy/2)::cy].T
+        orientation_histogram[:, :, i] = uniform_filter(temp_mag, size=(cx, cy))[round(cx/2)::cx, round(cy/2)::cy].T
 
     return orientation_histogram.ravel()
 
@@ -138,7 +138,7 @@ def color_histogram_hsv(im, nbin=10, xmin=0, xmax=255, normalized=True):
     ndim = im.ndim
     bins = np.linspace(xmin, xmax, nbin+1)
     hsv = matplotlib.colors.rgb_to_hsv(im/xmax) * xmax
-    imhist, bin_edges = np.histogram(hsv[:,:,0], bins=bins, density=normalized)
+    imhist, bin_edges = np.histogram(hsv[:, :, 0], bins=bins, density=normalized)
     imhist = imhist * np.diff(bin_edges)
 
     # return histogram
