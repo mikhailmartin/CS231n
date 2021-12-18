@@ -4,8 +4,7 @@ import numpy as np
 
 
 def eval_numerical_gradient(f, x, verbose=True, h=0.00001):
-    """
-    a naive implementation of numerical gradient of f at x
+    """A naive implementation of numerical gradient of f at x
     - f should be a function that takes a single argument
     - x is the point (numpy array) to evaluate the gradient at
     """
@@ -14,12 +13,11 @@ def eval_numerical_gradient(f, x, verbose=True, h=0.00001):
     # iterate over all indexes in x
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
     while not it.finished:
-
         # evaluate function at (x + h)
         ix = it.multi_index
         oldval = x[ix]
         x[ix] = oldval + h  # increment by h
-        fxph = f(x)  # evalute f(x + h)
+        fxph = f(x)  # evaluate f(x + h)
         x[ix] = oldval - h
         fxmh = f(x)  # evaluate f(x - h)
         x[ix] = oldval  # restore
@@ -34,9 +32,8 @@ def eval_numerical_gradient(f, x, verbose=True, h=0.00001):
 
 
 def eval_numerical_gradient_array(f, x, df, h=1e-5):
-    """
-    Evaluate a numeric gradient for a function that accepts a numpy
-    array and returns a numpy array.
+    """Evaluate a numeric gradient for a function that accepts a numpy array and returns
+    a numpy array.
     """
     grad = np.zeros_like(x)
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
@@ -56,9 +53,7 @@ def eval_numerical_gradient_array(f, x, df, h=1e-5):
 
 
 def eval_numerical_gradient_blobs(f, inputs, output, h=1e-5):
-    """
-    Compute numeric gradients for a function that operates on input
-    and output blobs.
+    """Compute numeric gradients for a function that operates on input and output blobs.
 
     We assume that f accepts several input blobs as arguments, followed by a
     blob where outputs will be written. For example, f might be called like:
@@ -67,11 +62,11 @@ def eval_numerical_gradient_blobs(f, inputs, output, h=1e-5):
 
     where x and w are input Blobs, and the result of f will be written to out.
 
-    Inputs:
-    - f: function
-    - inputs: tuple of input blobs
-    - output: output blob
-    - h: step size
+    Args:
+        f: function
+        inputs: tuple of input blobs
+        output: output blob
+        h: step size
     """
     numeric_diffs = []
     for input_blob in inputs:
@@ -98,15 +93,11 @@ def eval_numerical_gradient_blobs(f, inputs, output, h=1e-5):
 
 
 def eval_numerical_gradient_net(net, inputs, output, h=1e-5):
-    return eval_numerical_gradient_blobs(lambda *args: net.forward(),
-                inputs, output, h=h)
+    return eval_numerical_gradient_blobs(lambda *args: net.forward(), inputs, output, h=h)
 
 
 def grad_check_sparse(f, x, analytic_grad, num_checks=10, h=1e-5):
-    """
-    sample a few random elements and only return numerical
-    in this dimensions.
-    """
+    """Sample a few random elements and only return numerical in these dimensions."""
 
     print('Проверка началась.')
     for i in range(num_checks):

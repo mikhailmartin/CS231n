@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class TwoLayerNet():
+class TwoLayerNet:
     """
     A two-layer fully-connected neural network. The net has an input dimension of
     N, a hidden layer dimension of H, and performs classification over C classes.
@@ -16,7 +16,6 @@ class TwoLayerNet():
 
     The outputs of the second fully-connected layer are the scores for each class.
     """
-
     def __init__(self, input_size, hidden_size, output_size, std=1e-4):
         """
         Initialize the model. Weights are initialized to small random values and
@@ -38,7 +37,6 @@ class TwoLayerNet():
         self.params['b1'] = np.zeros(hidden_size)
         self.params['W2'] = std * np.random.randn(hidden_size, output_size)
         self.params['b2'] = np.zeros(output_size)
-
 
     def loss(self, X, y=None, reg=0.0):
         """
@@ -113,7 +111,6 @@ class TwoLayerNet():
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         return loss, grads
-
 
     def train(self, X, y, X_val, y_val,
               learning_rate=1e-3, learning_rate_decay=0.95,
@@ -193,7 +190,6 @@ class TwoLayerNet():
           'train_acc_history': train_acc_history,
           'val_acc_history': val_acc_history,
         }
-
 
     def predict(self, X):
         """

@@ -3,13 +3,12 @@ import numpy as np
 
 
 def visualize_grid(Xs, ubound=255.0, padding=1):
-    """
-    Reshape a 4D tensor of image data to a grid for easy visualization.
+    """Reshape a 4D tensor of image data to a grid for easy visualization.
 
-    Inputs:
-    - Xs: Data of shape (N, H, W, C)
-    - ubound: Output grid will have values scaled to the range [0, ubound]
-    - padding: The number of blank pixels between elements of the grid
+    Args:
+        Xs: Data of shape (N, H, W, C)
+        ubound: Output grid will have values scaled to the range [0, ubound]
+        padding: The number of blank pixels between elements of the grid
     """
     (N, H, W, C) = Xs.shape
     grid_size = int(ceil(sqrt(N)))
@@ -39,7 +38,7 @@ def visualize_grid(Xs, ubound=255.0, padding=1):
 
 
 def vis_grid(Xs):
-    """ visualize a grid of images """
+    """Visualize a grid of images."""
     (N, H, W, C) = Xs.shape
     A = int(ceil(sqrt(N)))
     G = np.ones((A * H + A, A * W + A, C), Xs.dtype)
@@ -59,7 +58,7 @@ def vis_grid(Xs):
 
 
 def vis_nn(rows):
-    """ visualize array of arrays of images """
+    """Visualize array of arrays of images."""
     N = len(rows)
     D = len(rows[0])
     H, W, C = rows[0][0].shape
