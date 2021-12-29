@@ -1,12 +1,11 @@
-# VS code
-/.vscode
-
-# Virtual enviroment
+# PyCharm
+/.idea
+# виртуалка
 /env
-
-# Python
-.ipynb_checkpoints/
+# Bytecode
 __pycache__/
-
+*.py[cod]
+# IPython
+.ipynb_checkpoints/
 # CS231n
 cifar-10-batches-py/
